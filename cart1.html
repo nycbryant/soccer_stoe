@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+<div class="container">
+    <h3>Featured Products</h3>
+    <div class="list">
+        <!-- Product 1 -->
+        <div class="item" id="product1">
+            <img src="images/HMDDLA.jpeg" alt="product1">
+            <h2 class="title">FUTBOL CLUB SWEATS</h2>
+            <p class="price"><strong>Price: $120.00 </strong><br>
+            HMDD CHIM-U FUTBOL CLUB SWEATS</p>
+            <button id="addToCartBtn1">Add to Cart</button>
+        </div>
+    </div>
+    <!-- Cart Element -->
+    <div id="cart">
+        <h3>Shopping Cart</h3>
+        <ul id="cartItems"></ul>
+        <p id="totalPrice">Total Price: $0.00</p> <!-- Display total price here -->
+    </div>
+</div>
+
+<script>
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    function displayCart() {
+        const cartItemsElement = document.getElementById('cartItems');
+        const totalPriceElement = document.getElementById('totalPrice');
+        cartItemsElement.innerHTML = '';
+        
+        let totalPrice = 0; // Initialize total price
+        
+        cart.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = `${item.name} - $${item.price}`;
+            cartItemsElement.appendChild(li);
+            totalPrice += item.price; // Accumulate item prices
+        });
+        
+        // Display total price
+        updateTotalPrice(totalPrice);
+    }
+
+    function updateTotalPrice(price) {
+        const totalPriceElement = document.getElementById('totalPrice');
+        totalPriceElement.textContent = `Total Price: $${price.toFixed(2)}`;
+    }
+
+    function addToCart(productName, price, imageSrc) {
+        const item = { name: productName, price: parseFloat(price.replace("$", "")) };
+        cart.push(item);
+        localStorage.setItem('cart', JSON.stringify(cart)); // Store entire cart
+        displayCart();
+    }
+
+    // Function to initialize product buttons
+    function initializeProductButtons() {
+        const addToCartBtn = document.getElementById("addToCartBtn1");
+        addToCartBtn.addEventListener("click", function() {
+            addToCart("FUTBOL CLUB SWEATS", "$120.00", "images/HMDDLA.jpeg");
+        });
+    }
+
+    // Call initializeProductButtons to set up product buttons
+    initializeProductButtons();
+
+    // Display initial cart
+    displayCart();
+</script>
+</body>
+</html>
+
